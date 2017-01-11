@@ -20,8 +20,15 @@ def convertImg(img):
  		newImg[i % 1024 / 32, i % 32, i / 1024] = img[i]
  	return newImg
 
+"""
+img1 = imread('testPic.jpg')
+plt.imshow(np.uint8(img1))
+plt.show()
+"""
+
 dict1 = unpickle("cifar-10-batches-py/data_batch_1")
 img1 = dict1['data'][0] #the first picture
+
 """
 print dict1['labels'][0] #the class to which the picture belongs to, represented as numbers
 print dict1['batch_label'][0] #five train batches and one test batch
