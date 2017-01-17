@@ -157,6 +157,9 @@ P
    # neighbors. Store these labels in closest_y.                           #
    # Hint: Look up the function numpy.argsort.                             #
    #########################################################################
+   sortedIndex = np.argsort(dists[i])
+   for j in xrange(k):
+    closest_y.append(self.y_train[sortedIndex[j]])
    pass
    #########################################################################
    # TODO:                                                                 #
@@ -165,6 +168,14 @@ P
    # Store this label in y_pred[i]. Break ties by choosing the smaller     #
    # label.                                                                #
    #########################################################################
+   timesDict = {}
+   for elem in closest_y:
+    if elem in timesDict:
+        timesDict[elem] += 1
+    else:
+        timesDict[elem] = 1
+    sortedTimesDict = sorted(timesDict.iteritems(), key = lambda d : d[1], reverse = True)
+    y_pred[i] = sortedTimesDict[0][0]
    pass
    #########################################################################
    #                           END OF YOUR CODE                            #
