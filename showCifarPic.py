@@ -41,3 +41,5 @@ print img2.dtype, img2.shape
 """
 plt.imshow(np.uint8(img2)) #Convert float64 to uint8, otherwise the picture will look strange
 plt.show()
+
+#test git
