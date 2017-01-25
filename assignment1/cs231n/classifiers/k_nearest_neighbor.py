@@ -1,6 +1,7 @@
 import numpy as np
 
 class KNearestNeighbor(object):
+  
 
  """ a kNN classifier with L2 distance """
 
