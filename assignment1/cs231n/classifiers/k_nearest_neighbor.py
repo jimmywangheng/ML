@@ -126,6 +126,28 @@ P
   # HINT: Try to formulate the l2 distance using matrix multiplication    #
   #       and two broadcast sums.                                         #
   #########################################################################
+  """
+  WARNING: The following method will cause memory error (memory limit exceeded)!
+  diff = X[:,np.newaxis,:] - self.X_train[np.newaxis,:,:]
+  dists = np.sqrt(np.sum(diff ** 2, axis = -1))
+  """
+  X_square = X * X
+  X_square_sum = np.sum(X_square, axis = 1)
+  X_square_sum_expanded = np.array([X_square_sum] * num_train).T
+
+  X_train_square = self.X_train * self.X_train
+  X_train_square_sum = np.sum(X_train_square, axis = 1)
+  X_train_square_sum_expanded = np.array([X_train_square_sum] * num_test)
+
+  X_dot_X_train = X.dot(self.X_train.T)
+
+  """
+  print X_square_sum_expanded.shape
+  print X_train_square_sum_expanded.shape
+  print X_dot_X_train.shape
+  """
+
+  dists = np.sqrt(X_square_sum_expanded + X_train_square_sum_expanded - 2 * X_dot_X_train)
   pass
   #########################################################################
   #                         END OF YOUR CODE                              #
