@@ -24,6 +24,7 @@ def eval_numerical_gradient(f, x, verbose=True, h=0.00001):
     x[ix] = oldval # restore
 
     # compute the partial derivative with centered formula
+    # The centered formula method has error O(h^2)
     grad[ix] = (fxph - fxmh) / (2 * h) # the slope
     if verbose:
       print ix, grad[ix]
