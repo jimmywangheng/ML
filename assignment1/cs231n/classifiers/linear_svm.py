@@ -29,8 +29,9 @@ def svm_loss_naive(W, X, y, reg):
     scores = X[i].dot(W)
     correct_class_score = scores[y[i]]
     for j in xrange(num_classes):
-      if j == y[i]:
+      if j == y[i]: #Correct class, no loss
         continue
+      #Wrong class, should compute loss
       margin = scores[j] - correct_class_score + 1 # note delta = 1
       if margin > 0:
         loss += margin
@@ -73,6 +74,19 @@ def svm_loss_vectorized(W, X, y, reg):
   # Implement a vectorized version of the structured SVM loss, storing the    #
   # result in loss.                                                           #
   #############################################################################
+  num_train = X.shape[0]
+  scores = X.dot(W)
+  sequence = np.array(range(num_train))
+  correct_class_score = scores[sequence, y]
+  #such expression can iterate on two arrays simultaneously, making one-to-one correspondence
+
+  margin = np.maximum(0, scores.T - correct_class_score + 1).T
+  margin[sequence, y] = 0
+  loss += np.sum(margin)
+
+  loss /= num_train
+  loss += 0.5 * reg * np.sum(W * W)
+
   pass
   #############################################################################
   #                             END OF YOUR CODE                              #
@@ -88,6 +102,7 @@ def svm_loss_vectorized(W, X, y, reg):
   # to reuse some of the intermediate values that you used to compute the     #
   # loss.                                                                     #
   #############################################################################
+  margin = np.where(margin > 0, 1, 0)
   pass
   #############################################################################
   #                             END OF YOUR CODE                              #
