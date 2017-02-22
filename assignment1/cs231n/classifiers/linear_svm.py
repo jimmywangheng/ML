@@ -102,8 +102,20 @@ def svm_loss_vectorized(W, X, y, reg):
   # to reuse some of the intermediate values that you used to compute the     #
   # loss.                                                                     #
   #############################################################################
-  margin = np.where(margin > 0, 1, 0)
-  pass
+
+  X_mask = np.zeros(margin.shape)
+  # column maps to class, row maps to sample; a value v in X_mask[i, j]
+  # adds a row sample i to column class j with multiple of v
+  X_mask[margin > 0] = 1
+  # for each sample, find the total number of classes where margin > 0
+  incorrect_counts = np.sum(X_mask, axis=1)
+  X_mask[np.arange(num_train), y] = -incorrect_counts
+  dW = X.T.dot(X_mask)
+  # for j = y[i], you should count the incorrect counts, and minus X[i]
+  # for j != y[i], you just judge whether it is larger than margin, if it is, plus X[i]
+
+  dW /= num_train
+  dW += reg*W
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
